@@ -80,6 +80,29 @@ h3 {
     margin-top: 5px;
 }
 
+.language-dropdown {
+    margin-top: 20px;
+}
+
+.language-dropdown select {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    background: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.language-dropdown select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
+}
+
 .editor-form {
     padding: 30px;
     display: flex;

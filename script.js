@@ -23,28 +23,224 @@ document.addEventListener('DOMContentLoaded', () => {
     const previewEducationList = document.getElementById('preview-education-list');
     const previewAvatar = document.getElementById('preview-avatar');
     const previewAvatarContainer = document.getElementById('preview-avatar-container');
+    const langSelect = document.getElementById('lang-select');
+
+    // Translations Object
+    const translations = {
+        en: {
+            appTitle: "CV Studio",
+            appSubtitle: "Build your professional presence.",
+            personalInfo: "Personal Info",
+            photo: "Profile Photo",
+            name: "Full Name",
+            jobTitle: "Job Title",
+            email: "Email",
+            phone: "Phone",
+            location: "Location",
+            website: "Portfolio/LinkedIn",
+            summary: "Professional Summary",
+            experience: "Work Experience",
+            education: "Education",
+            skills: "Skills",
+            addBtn: "+ Add",
+            downloadBtn: "Download PDF",
+            placeholders: {
+                name: "John Doe",
+                job: "Senior Product Designer",
+                email: "john@example.com",
+                phone: "+1 (555) 000-0000",
+                location: "New York, NY",
+                website: "linkedin.com/in/johndoe",
+                summary: "Briefly describe your expertise...",
+                skills: "UI/UX, React, Node.js",
+                company: "Google",
+                role: "Senior Dev",
+                duration: "2020 - Present",
+                desc: "Describe your responsibilities...",
+                school: "MIT",
+                degree: "Computer Science"
+            }
+        },
+        uz_lat: {
+            appTitle: "CV Studio",
+            appSubtitle: "Professional qiyofangizni yarating.",
+            personalInfo: "Shaxsiy ma'lumotlar",
+            photo: "Profil rasmi",
+            name: "To'liq ism",
+            jobTitle: "Kasp/Lavozim",
+            email: "Email",
+            phone: "Telefon",
+            location: "Manzil",
+            website: "Portfolio/LinkedIn",
+            summary: "Professional xulosa",
+            experience: "Ish tajribasi",
+            education: "Ta'lim",
+            skills: "Ko'nikmalar",
+            addBtn: "+ Qo'shish",
+            downloadBtn: "PDF yuklab olish",
+            placeholders: {
+                name: "Ali Valiyev",
+                job: "Senior Dasturchi",
+                email: "ali@example.com",
+                phone: "+998 90 123 45 67",
+                location: "Toshkent, O'zbekiston",
+                website: "linkedin.com/in/alivaliyev",
+                summary: "O'z tajribangiz haqida qisqacha...",
+                skills: "Dasturlash, Menejment",
+                company: "Kompaniya nomi",
+                role: "Lavozim",
+                duration: "2020 - Hozir",
+                desc: "Vazifalaringizni tavsiflang...",
+                school: "Universitet",
+                degree: "Mutaxassislik"
+            }
+        },
+        uz_cyr: {
+            appTitle: "CV Studio",
+            appSubtitle: "Профессионал қиёфангизни яратинг.",
+            personalInfo: "Шахсий маълумотлар",
+            photo: "Профил расми",
+            name: "Тўлиқ исм",
+            jobTitle: "Касп/Лавозим",
+            email: "Email",
+            phone: "Телефон",
+            location: "Манзил",
+            website: "Portfolio/LinkedIn",
+            summary: "Профессионал хулоса",
+            experience: "Иш тажрибаси",
+            education: "Таълим",
+            skills: "Кўникмалар",
+            addBtn: "+ Қўшиш",
+            downloadBtn: "PDF юклаб олиш",
+            placeholders: {
+                name: "Али Валиев",
+                job: "Senior Дастурчи",
+                email: "ali@example.com",
+                phone: "+998 90 123 45 67",
+                location: "Тошкент, Ўзбекистон",
+                website: "linkedin.com/in/alivaliyev",
+                summary: "Ўз тажрибангиз ҳақида қисқача...",
+                skills: "Дастурлаш, Менежмент",
+                company: "Компания номи",
+                role: "Лавозим",
+                duration: "2020 - Ҳозир",
+                desc: "Вазифаларингизни тавсифланг...",
+                school: "Университет",
+                degree: "Мутахассислик"
+            }
+        },
+        ru: {
+            appTitle: "CV Studio",
+            appSubtitle: "Создайте свой профессиональный образ.",
+            personalInfo: "Личная информация",
+            photo: "Фото профиля",
+            name: "Полное имя",
+            jobTitle: "Должность",
+            email: "Email",
+            phone: "Телефон",
+            location: "Местоположение",
+            website: "Портфолио/LinkedIn",
+            summary: "Профессиональное резюме",
+            experience: "Опыт работы",
+            education: "Образование",
+            skills: "Навыки",
+            addBtn: "+ Добавить",
+            downloadBtn: "Скачать PDF",
+            placeholders: {
+                name: "Иван Иванов",
+                job: "Старший разработчик",
+                email: "ivan@example.com",
+                phone: "+7 (999) 000-00-00",
+                location: "Москва, Россия",
+                website: "linkedin.com/in/ivanov",
+                summary: "Кратко опишите ваш опыт...",
+                skills: "Дизайн, Разработка",
+                company: "Название компании",
+                role: "Должность",
+                duration: "2020 - Настоящее время",
+                desc: "Опишите ваши обязанности...",
+                school: "Университет",
+                degree: "Специальность"
+            }
+        }
+    };
+
+    let currentLang = 'en';
 
     // Lists for Dynamic Sections
     let experienceItems = [];
     let educationItems = [];
     let avatarBase64 = "";
 
+    // Helper: Update UI Language
+    const updateUILanguage = (lang) => {
+        currentLang = lang;
+        const t = translations[lang];
+
+        // Header
+        document.getElementById('label-app-title').textContent = t.appTitle;
+        document.getElementById('label-app-subtitle').textContent = t.appSubtitle;
+
+        // Sections
+        document.getElementById('label-personal-info').textContent = t.personalInfo;
+        document.getElementById('label-photo').textContent = t.photo;
+        document.getElementById('label-name').textContent = t.name;
+        document.getElementById('label-job-title').textContent = t.jobTitle;
+        document.getElementById('label-email').textContent = t.email;
+        document.getElementById('label-phone').textContent = t.phone;
+        document.getElementById('label-location').textContent = t.location;
+        document.getElementById('label-website').textContent = t.website;
+        document.getElementById('label-summary').textContent = t.summary;
+        document.getElementById('label-experience').textContent = t.experience;
+        document.getElementById('label-education').textContent = t.education;
+        document.getElementById('label-skills').textContent = t.skills;
+
+        // Preview Headers
+        document.getElementById('preview-label-summary').textContent = t.summary;
+        document.getElementById('preview-label-experience').textContent = t.experience;
+        document.getElementById('preview-label-education').textContent = t.education;
+        document.getElementById('preview-label-skills').textContent = t.skills;
+
+        // Buttons
+        document.getElementById('add-experience').textContent = t.addBtn;
+        document.getElementById('add-education').textContent = t.addBtn;
+        document.getElementById('download-btn').textContent = t.downloadBtn;
+
+        // Placeholders
+        fullNameInput.placeholder = t.placeholders.name;
+        jobTitleInput.placeholder = t.placeholders.job;
+        emailInput.placeholder = t.placeholders.email;
+        phoneInput.placeholder = t.placeholders.phone;
+        locationInput.placeholder = t.placeholders.location;
+        websiteInput.placeholder = t.placeholders.website;
+        summaryInput.placeholder = t.placeholders.summary;
+        skillsInput.placeholder = t.placeholders.skills;
+
+        renderExperience();
+        renderEducation();
+    };
+
+    langSelect.addEventListener('change', (e) => {
+        updateUILanguage(e.target.value);
+        saveToLocalStorage();
+    });
+
     // Helper: Update Single Text Element
-    const updateText = (input, preview, fallback = '') => {
+    const updateText = (input, preview, fallbackKey) => {
         input.addEventListener('input', (e) => {
-            preview.textContent = e.target.value || fallback;
+            preview.textContent = e.target.value || translations[currentLang].placeholders[fallbackKey];
             saveToLocalStorage();
         });
     };
 
     // Initialize Text Updates
-    updateText(fullNameInput, previewName, 'Your Name');
-    updateText(jobTitleInput, previewTitle, 'Your Job Title');
-    updateText(emailInput, previewEmail, 'email@example.com');
-    updateText(phoneInput, previewPhone, '00000000');
-    updateText(locationInput, previewLocation, 'Location');
-    updateText(websiteInput, previewWebsite, 'website.com');
-    updateText(summaryInput, previewSummary, 'A brief introduction about your career journey...');
+    updateText(fullNameInput, previewName, 'name');
+    updateText(jobTitleInput, previewTitle, 'job');
+    updateText(emailInput, previewEmail, 'email');
+    updateText(phoneInput, previewPhone, 'phone');
+    updateText(locationInput, previewLocation, 'location');
+    updateText(websiteInput, previewWebsite, 'website');
+    updateText(summaryInput, previewSummary, 'summary');
 
     // Photo Handling
     photoInput.addEventListener('change', (e) => {
@@ -77,26 +273,29 @@ document.addEventListener('DOMContentLoaded', () => {
         previewExperienceList.innerHTML = '';
 
         experienceItems.forEach((item, index) => {
+            const t = translations[currentLang];
             // Sidebar Input Item
             const itemEl = document.createElement('div');
             itemEl.className = 'repeater-item';
             itemEl.innerHTML = `
                 <button type="button" class="remove-btn" data-index="${index}">×</button>
-                <div class="input-group">
-                    <label>Company</label>
-                    <input type="text" value="${item.company}" data-field="company" data-index="${index}" placeholder="Google">
-                </div>
-                <div class="input-group">
-                    <label>Role</label>
-                    <input type="text" value="${item.role}" data-field="role" data-index="${index}" placeholder="Senior Dev">
-                </div>
-                <div class="input-group">
-                    <label>Duration</label>
-                    <input type="text" value="${item.duration}" data-field="duration" data-index="${index}" placeholder="2020 - Present">
-                </div>
-                <div class="input-group full-width">
-                    <label>Description</label>
-                    <textarea data-field="desc" data-index="${index}" placeholder="Describe your responsibilities...">${item.desc}</textarea>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>${t.experience.split(' ')[0]}</label>
+                        <input type="text" value="${item.company}" data-field="company" data-index="${index}" placeholder="${t.placeholders.company}">
+                    </div>
+                    <div class="input-group">
+                        <label>Role</label>
+                        <input type="text" value="${item.role}" data-field="role" data-index="${index}" placeholder="${t.placeholders.role}">
+                    </div>
+                    <div class="input-group">
+                        <label>Duration</label>
+                        <input type="text" value="${item.duration}" data-field="duration" data-index="${index}" placeholder="${t.placeholders.duration}">
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Description</label>
+                        <textarea data-field="desc" data-index="${index}" placeholder="${t.placeholders.desc}">${item.desc}</textarea>
+                    </div>
                 </div>
             `;
             experienceContainer.appendChild(itemEl);
@@ -106,11 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
             previewEl.className = 'preview-item';
             previewEl.innerHTML = `
                 <div class="preview-item-header">
-                    <span>${item.company || 'Company'}</span>
-                    <span>${item.duration || 'Date'}</span>
+                    <span>${item.company || t.placeholders.company}</span>
+                    <span>${item.duration || t.placeholders.duration}</span>
                 </div>
-                <div class="preview-item-sub">${item.role || 'Role'}</div>
-                <div class="preview-item-desc">${item.desc || 'Responsibilities...'}</div>
+                <div class="preview-item-sub">${item.role || t.placeholders.role}</div>
+                <div class="preview-item-desc">${item.desc || t.placeholders.desc}</div>
             `;
             previewExperienceList.appendChild(previewEl);
         });
@@ -153,21 +352,24 @@ document.addEventListener('DOMContentLoaded', () => {
         previewEducationList.innerHTML = '';
 
         educationItems.forEach((item, index) => {
+            const t = translations[currentLang];
             const itemEl = document.createElement('div');
             itemEl.className = 'repeater-item';
             itemEl.innerHTML = `
                 <button type="button" class="remove-btn" data-index="${index}">×</button>
-                <div class="input-group">
-                    <label>Institution</label>
-                    <input type="text" value="${item.school}" data-field="school" data-index="${index}" placeholder="MIT">
-                </div>
-                <div class="input-group">
-                    <label>Degree</label>
-                    <input type="text" value="${item.degree}" data-field="degree" data-index="${index}" placeholder="Computer Science">
-                </div>
-                <div class="input-group full-width">
-                    <label>Dates</label>
-                    <input type="text" value="${item.duration}" data-field="duration" data-index="${index}" placeholder="2016 - 2020">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>${t.education}</label>
+                        <input type="text" value="${item.school}" data-field="school" data-index="${index}" placeholder="${t.placeholders.school}">
+                    </div>
+                    <div class="input-group">
+                        <label>Degree</label>
+                        <input type="text" value="${item.degree}" data-field="degree" data-index="${index}" placeholder="${t.placeholders.degree}">
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Dates</label>
+                        <input type="text" value="${item.duration}" data-field="duration" data-index="${index}" placeholder="${t.placeholders.duration}">
+                    </div>
                 </div>
             `;
             educationContainer.appendChild(itemEl);
@@ -176,10 +378,10 @@ document.addEventListener('DOMContentLoaded', () => {
             previewEl.className = 'preview-item';
             previewEl.innerHTML = `
                 <div class="preview-item-header">
-                    <span>${item.school || 'University'}</span>
-                    <span>${item.duration || 'Date'}</span>
+                    <span>${item.school || t.placeholders.school}</span>
+                    <span>${item.duration || t.placeholders.duration}</span>
                 </div>
-                <div class="preview-item-sub">${item.degree || 'Degree'}</div>
+                <div class="preview-item-sub">${item.degree || t.placeholders.degree}</div>
             `;
             previewEducationList.appendChild(previewEl);
         });
@@ -222,7 +424,8 @@ document.addEventListener('DOMContentLoaded', () => {
             skills: skillsInput.value,
             experience: experienceItems,
             education: educationItems,
-            avatar: avatarBase64
+            avatar: avatarBase64,
+            language: currentLang
         };
         localStorage.setItem('cv-draft', JSON.stringify(data));
     };
@@ -242,15 +445,20 @@ document.addEventListener('DOMContentLoaded', () => {
             experienceItems = data.experience || [];
             educationItems = data.education || [];
             avatarBase64 = data.avatar || "";
+            currentLang = data.language || 'en';
+            langSelect.value = currentLang;
+
+            // Update UI with correct language
+            updateUILanguage(currentLang);
 
             // Update previews
-            previewName.textContent = data.fullName || 'Your Name';
-            previewTitle.textContent = data.jobTitle || 'Your Job Title';
-            previewEmail.textContent = data.email || 'email@example.com';
-            previewPhone.textContent = data.phone || '00000000';
-            previewLocation.textContent = data.location || 'Location';
-            previewWebsite.textContent = data.website || 'website.com';
-            previewSummary.textContent = data.summary || 'Summary...';
+            previewName.textContent = data.fullName || translations[currentLang].placeholders.name;
+            previewTitle.textContent = data.jobTitle || translations[currentLang].placeholders.job;
+            previewEmail.textContent = data.email || translations[currentLang].placeholders.email;
+            previewPhone.textContent = data.phone || translations[currentLang].placeholders.phone;
+            previewLocation.textContent = data.location || translations[currentLang].placeholders.location;
+            previewWebsite.textContent = data.website || translations[currentLang].placeholders.website;
+            previewSummary.textContent = data.summary || translations[currentLang].placeholders.summary;
 
             if (avatarBase64) {
                 previewAvatar.src = avatarBase64;
