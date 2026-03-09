@@ -1,0 +1,13 @@
+{
+  "name": "cv-studio",
+  "version": "1.0.0",
+  "description": "A premium CV Generator",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx -y serve ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+     "serve": "^14.2.4"
+  }
+}
